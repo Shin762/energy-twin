@@ -1,0 +1,16 @@
+# secrets
+.env
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# editor / os
+.vscode/
+Thumbs.db
+
+# outputs
+out/
+*.png

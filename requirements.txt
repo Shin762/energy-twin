@@ -1,0 +1,5 @@
+pytest
+# added later in Phase 1:
+# pandas      (week 5)
+# matplotlib  (week 5)
+# pulp        (week 9)
