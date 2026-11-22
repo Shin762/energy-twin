@@ -15,7 +15,7 @@ def kw_to_kwh(power_kw, hours):
 
     例: kw_to_kwh(100, 2) -> 200
     """
-    raise NotImplementedError
+    return power_kw * hours
 
 
 def is_demand_over(demand_kw, contract_kw):
@@ -24,7 +24,7 @@ def is_demand_over(demand_kw, contract_kw):
     ちょうど同じときは超えていないので False。
     例: is_demand_over(510, 500) -> True
     """
-    raise NotImplementedError
+    return demand_kw > contract_kw
 
 
 def daily_energy(hourly_kw):
@@ -33,7 +33,10 @@ def daily_energy(hourly_kw):
     sum() を使わず for 文で足し合わせること。空のリストなら 0。
     例: daily_energy([10, 20, 30]) -> 60
     """
-    raise NotImplementedError
+    total = 0
+    for i in range(len(hourly_kw)):
+        total += hourly_kw[i]
+    return total
 
 
 def peak_hour(hourly_kw):
@@ -42,7 +45,13 @@ def peak_hour(hourly_kw):
     max() を使わないこと。同じ最大値が複数あるときは、最初のものを返す。
     例: peak_hour([10, 50, 30, 50]) -> 1
     """
-    raise NotImplementedError
+    max_value = hourly_kw[0]
+    max_index = 0
+    for i in range(len(hourly_kw)):
+        if hourly_kw[i] > max_value:
+            max_value = hourly_kw[i]
+            max_index = i
+    return max_index
 
 
 def battery_soc_after(soc_kwh, power_kw, hours, capacity_kwh):
@@ -53,7 +62,13 @@ def battery_soc_after(soc_kwh, power_kw, hours, capacity_kwh):
     例: battery_soc_after(50, 20, 1, 100) -> 70
         battery_soc_after(90, 20, 1, 100) -> 100
     """
-    raise NotImplementedError
+    new_soc = soc_kwh + power_kw * hours
+    if new_soc < 0:
+        return 0
+    elif new_soc > capacity_kwh:
+        return capacity_kwh
+    else:
+        return new_soc
 
 
 def peak_cut(hourly_demand_kw, threshold_kw):
@@ -62,4 +77,10 @@ def peak_cut(hourly_demand_kw, threshold_kw):
     超えていない時刻は 0。
     例: peak_cut([400, 520, 480, 600], 500) -> [0, 20, 0, 100]
     """
-    raise NotImplementedError
+    discharge_list = []
+    for demand in hourly_demand_kw:
+        if demand > threshold_kw:
+            discharge_list.append(demand - threshold_kw)
+        else:
+            discharge_list.append(0)
+    return discharge_list
